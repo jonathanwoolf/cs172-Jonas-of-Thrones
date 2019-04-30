@@ -32,7 +32,7 @@ def main():
     if(len(inputs) >= 1):
         user_handle = str(inputs[0])
     else:
-        user_handle = ""
+        user_handle = "BarrackObama"
     if(len(inputs) >= 2):
         tweet_count = int(inputs[1])
     else:
@@ -41,7 +41,11 @@ def main():
         num_hops = int(inputs[2])
     else:
         num_hops = 1
+    if(len(inputs) >= 4):
+        output_dir = int(inputs[3])
+    else:
+        output_dir = "default"
     #call download_tweets with necessary info
-    download_tweets(user_handle, tweet_count, num_hops)
+    download_tweets(user_handle, tweet_count, num_hops, output_dir)
 
 main()
