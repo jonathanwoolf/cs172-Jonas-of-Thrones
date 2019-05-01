@@ -15,6 +15,7 @@ consumer_secret = str(f1[3])
 access_key = access_key[:-1]
 access_secret = access_secret[:-1]
 consumer_key = consumer_key[:-1]
+consumer_secret = consumer_secret[:-1]
 
 def download_tweets(user_handle, tweet_count, num_hops, output_dir):
     #authorize customer/access keys and secrets
