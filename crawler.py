@@ -3,28 +3,34 @@
 
 import tweepy
 import sys
+import json
 
 #get keys
 f = open("twitterkeys.txt", "r")
 f1 = f.readlines()
-access_key = f1[0]
-access_secret = f1[1]
-consumer_key = f1[2]
-consumer_secret = f1[3]
+access_key = str(f1[0])
+access_secret = str(f1[1])
+consumer_key = str(f1[2])
+consumer_secret = str(f1[3])
+access_key = access_key[:-1]
+access_secret = access_secret[:-1]
+consumer_key = consumer_key[:-1]
+consumer_secret = consumer_secret[:-1]
 
-def download_tweets(user_handle, tweet_count, num_hops):
+def download_tweets(user_handle, tweet_count, num_hops, output_dir):
     #authorize customer/access keys and secrets
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
     #use twitter API to retrieve tweets
     api = tweepy.API(auth)
-    tweets = api.user_timeline(screen_name=user_handle)
+    tweets = api.user_timeline(id=user_handle,count=1,tweet_mode="extended")
     #array to store tweet text
     tweetText = []
-    csv_tweets = [tweet.text for tweet in tweets] #Creating CSV file for tweets
-    for j in csv_tweets:
-        tweetText.append(j)
-    print(tweetText)
+    with open ("data.json") as outfile:
+        for tweet in tweets:
+            print(tweet.full_text)
+            data = json.dump(tweet, outfile)
+        
 
 def main():
     #parse argv (command line arguments) for starting user_handle, tweet_count and num_hops
@@ -32,7 +38,7 @@ def main():
     if(len(inputs) >= 1):
         user_handle = str(inputs[0])
     else:
-        user_handle = "BarrackObama"
+        user_handle = "nytimes"
     if(len(inputs) >= 2):
         tweet_count = int(inputs[1])
     else:
