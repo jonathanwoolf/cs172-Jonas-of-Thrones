@@ -26,46 +26,44 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
     api = tweepy.API(auth)
     file_cnt = 1
     curr_filename = 'tweets_' + str(file_cnt) + '.json'
+    i = 1
+    tweetList = [dict() for x in range(0)]
         
     while(tweet_count > 0):
+        if(tweet_count == 0):
+            break
         #while(len(follower_queue) > 0):
-        if(tweet_count >= 100):
-            #user_handle = pop_front(follower_queue)
-            tweets = api.user_timeline(id=user_handle,count=100,tweet_mode='extended')
-            #enqueueFollowers(user_handle)
-            for tweet in tweets:
-                curr_filename = 'tweets_' + str(file_cnt) + '.json'
-                data = {
-                    "Author": tweet.author.name,
-                    "Text": tweet.full_text,
-                    "Geo": tweet.geo
-                }
+        batch_count = min(tweet_count, 100)
+        #user_handle = pop_front(follower_queue)
+        tweets = api.user_timeline(id=user_handle,count=batch_count,tweet_mode='extended')
+        #enqueueFollowers(user_handle)
+        for tweet in tweets:
+            data = {
+                "Author": tweet.author.name,
+                "Text": tweet.full_text,
+                "Geo": tweet.geo
+            }
+            tweetList.append(data)
+            ++i
+            if(i >= 4000):
+                print("Dumping > 4000")
                 with open(curr_filename, 'w+') as outfile:
-                    json.dump(data, outfile)
-                statinfo = os.stat(curr_filename)
-                if(statinfo.st_size > (10 * 1024 *1024)):
-                    ++file_cnt
-                    curr_filename = 'tweets_' + str(file_cnt) + '.json'
-            tweet_count = tweet_count - len(tweets)
-
-        else:
-            #user_handle = pop_front(follower_queue)
-            tweets = api.user_timeline(id=user_handle,count=tweet_count,tweet_mode='extended')
-            #enqueueFollowers(user_handle)
-            for tweet in tweets:
+                    for entry in tweetList:
+                        json.dump(entry, outfile)
+                        outfile.write('\n')
+                ++file_cnt
                 curr_filename = 'tweets_' + str(file_cnt) + '.json'
-                data = {
-                    "Author": tweet.author.name,
-                    "Text": tweet.full_text,
-                    "Geo": tweet.geo
-                }
-                with open(curr_filename, 'w+') as outfile:
-                    json.dump(data, outfile)
-                statinfo = os.stat(curr_filename)
-                if(statinfo.st_size > (10 * 1024 *1024)):
-                    ++file_cnt
-                    curr_filename = 'tweets_' + str(file_cnt) + '.json'
-            tweet_count = tweet_count - len(tweets)
+                i = 0
+                tweetList = [dict() for x in range(0)]
+                    
+        tweet_count = tweet_count - len(tweets)
+        if(tweet_count == 0):
+            print("Dumping")
+            print(tweetList)
+            with open(curr_filename, 'w+') as outfile:
+                for entry in tweetList:
+                    json.dump(entry, outfile)
+                    outfile.write('\n')
             
 def main():
     #parse argv (command line arguments) for starting user_handle, tweet_count and num_hops
