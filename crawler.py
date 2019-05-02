@@ -1,5 +1,8 @@
 #TODO:
-#1. Get friends/count num_hops
+#1. Get follwer ids (enqueueFollowers function)
+#2. pop_front function
+#3. implement queue functionality
+#4. Enforce num-hops
 
 import tweepy
 import sys
@@ -45,8 +48,7 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
             }
             tweetList.append(data)
             ++i
-            if(i >= 4000):
-                print("Dumping > 4000")
+            if(i >= 5000):
                 with open(curr_filename, 'w+') as outfile:
                     for entry in tweetList:
                         json.dump(entry, outfile)
@@ -58,8 +60,6 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
                     
         tweet_count = tweet_count - len(tweets)
         if(tweet_count == 0):
-            print("Dumping")
-            print(tweetList)
             with open(curr_filename, 'w+') as outfile:
                 for entry in tweetList:
                     json.dump(entry, outfile)
