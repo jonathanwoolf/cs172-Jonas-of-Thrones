@@ -24,40 +24,48 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
     auth.set_access_token(access_key, access_secret)
     #use twitter API to retrieve tweets
     api = tweepy.API(auth)
-    tweets = api.user_timeline(id=user_handle,count=1,tweet_mode='extended')
     file_cnt = 1
     curr_filename = 'tweets_' + str(file_cnt) + '.json'
-    print(tweets[0].full_text)
-    data = {
-        "Author": tweets[0].author.name,
-        "Text": tweets[0].full_text
-    }
-    with open(curr_filename, 'w+') as outfile:
-        json.dump(data, outfile)
-    statinfo = os.stat(curr_filename)
-    print(statinfo.st_size)
-    #file_cnt = 1
-#     while(tweet_count > 0):
-#         while(len(follower_queue) > 0):
-#         if(tweet_count >= 100):
-#             user_handle = pop_front(follower_queue)
-#             tweets = api.user_timeline(id=user_handle,count=100,tweet_mode='extended')
-#             enqueueFollowers(user_handle)
-            
-#             for tweet in tweets:
-#                 curr_filename = 'tweets_' + str(file_cnt) + '.json'
-#                 statinfo = os.stat(filename)
-#                 if(statinfo.st_size > 
-#                     print(tweet.full_text)
-#                     print(tweet.author.name)
-#             tweet_count = tweet_count - len(tweets)
-            
-#         else:
-#             tweets = api.user_timeline(id=user_handle,count=tweet_count,tweet_mode='extended')
-#             for tweet in tweets:
-#                 print(tweet.full_text)
-#                 print(tweet.author.name)
-#             tweet_count = tweet_count - tweet_count
+        
+    while(tweet_count > 0):
+        #while(len(follower_queue) > 0):
+        if(tweet_count >= 100):
+            #user_handle = pop_front(follower_queue)
+            tweets = api.user_timeline(id=user_handle,count=100,tweet_mode='extended')
+            #enqueueFollowers(user_handle)
+            for tweet in tweets:
+                curr_filename = 'tweets_' + str(file_cnt) + '.json'
+                data = {
+                    "Author": tweet.author.name,
+                    "Text": tweet.full_text,
+                    "Geo": tweet.geo
+                }
+                with open(curr_filename, 'w+') as outfile:
+                    json.dump(data, outfile)
+                statinfo = os.stat(curr_filename)
+                if(statinfo.st_size > (10 * 1024 *1024)):
+                    ++file_cnt
+                    curr_filename = 'tweets_' + str(file_cnt) + '.json'
+            tweet_count = tweet_count - len(tweets)
+
+        else:
+            #user_handle = pop_front(follower_queue)
+            tweets = api.user_timeline(id=user_handle,count=tweet_count,tweet_mode='extended')
+            #enqueueFollowers(user_handle)
+            for tweet in tweets:
+                curr_filename = 'tweets_' + str(file_cnt) + '.json'
+                data = {
+                    "Author": tweet.author.name,
+                    "Text": tweet.full_text,
+                    "Geo": tweet.geo
+                }
+                with open(curr_filename, 'w+') as outfile:
+                    json.dump(data, outfile)
+                statinfo = os.stat(curr_filename)
+                if(statinfo.st_size > (10 * 1024 *1024)):
+                    ++file_cnt
+                    curr_filename = 'tweets_' + str(file_cnt) + '.json'
+            tweet_count = tweet_count - len(tweets)
             
 def main():
     #parse argv (command line arguments) for starting user_handle, tweet_count and num_hops
