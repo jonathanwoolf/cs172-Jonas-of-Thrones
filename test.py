@@ -5,6 +5,7 @@ from tweepy import Stream
 import sys
 import json
 from urllib.request import urlopen
+import urllib
 import lxml.html
 import os
 
@@ -58,11 +59,17 @@ class twitterListener(StreamListener):
         else:
             tempURL = ""
         if (tempURL != ""):
-            html = urlopen(tempURL)
-            t = lxml.html.parse(html)
-            URLtitle = str(t.find(".//title").text)
+            try:
+                html = urlopen(tempURL)
+                t = lxml.html.parse(html)
+                URLtitle = str(t.find(".//title").text)
+            except urllib.HTTPError:
+                print("HTTP Error\n", err.code)
+            except urllib.URLError:
+                print("URL Error\n", err.reason)
         else:
             URLtitle = ""
+
         #so tweets dont get truncated
         if 'extended_tweet' in tweet:
             if 'full_text' in tweet['extended_tweet']:
@@ -100,4 +107,4 @@ l = twitterListener()
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
 stream = Stream(auth, l)
-stream.filter(track=[keyword],languages=["en"]) 
+stream.filter(track=[keyword],languages=["en"])
