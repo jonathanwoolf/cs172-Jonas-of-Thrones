@@ -28,7 +28,7 @@ else:
 if (len(sys.argv) > 2):
     tweet_count = int(sys.argv[2])
 else:
-    tweet_count = 5
+    tweet_count = 10
 if (len(sys.argv) > 3):
     dirName = str(sys.argv[3])
 else:
@@ -63,9 +63,17 @@ class twitterListener(StreamListener):
             URLtitle = str(t.find(".//title").text)
         else:
             URLtitle = ""
+        #so tweets dont get truncated
+        if 'extended_tweet' in tweet:
+            if 'full_text' in tweet['extended_tweet']:
+                text = tweet['extended_tweet']['full_text']
+            else:
+                text = tweet['text']
+        elif 'text' in tweet:
+            text = tweet['text']
         data = {
             "Author": tweet['user']['name'],
-            "Text": tweet['text'],
+            "Text": text,
             "Date": tweet['created_at'],
             "Link": tempURL,
             "Link Title": URLtitle,
