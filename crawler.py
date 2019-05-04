@@ -8,6 +8,7 @@ import tweepy
 import sys
 import json
 import os
+import lxml.html
 
 #get keys
 f = open("twitterkeys.txt", "r")
@@ -28,7 +29,7 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
     #use twitter API to retrieve tweets
     api = tweepy.API(auth)
     file_cnt = 1
-    curr_filename = 'tweets_' + str(file_cnt) + '.json'
+    curr_filename = 'tweets_' + str(file_cnt) + '.txt'
     i = 1
     tweetList = [dict() for x in range(0)]
         
@@ -41,9 +42,22 @@ def download_tweets(user_handle, tweet_count, num_hops, output_dir):
         tweets = api.user_timeline(id=user_handle,count=batch_count,tweet_mode='extended')
         #enqueueFollowers(user_handle)
         for tweet in tweets:
+            print(tweet.entities['urls'])
+#             if (len(tweet.entities['urls']) != 0):
+#                 tempURL = str(tweet.entities['urls'][0]['expanded_url'])
+#             else:
+#                 tempURL = ""
+#             if (tempURL != ""):
+#                 t = lxml.html.parse(tempURL)
+#                 URLtitle = str(t.find(".//title").text)
+#             else:
+#                 URLtitle = ""
             data = {
                 "Author": tweet.author.name,
                 "Text": tweet.full_text,
+                "Date": str(tweet.created_at),
+                #"Link": tempURL,
+                #"Link Title": URLtitle,
                 "Geo": tweet.geo
             }
             tweetList.append(data)
