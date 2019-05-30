@@ -25,7 +25,7 @@ consumer_secret = consumer_secret[:-1]
 if (len(sys.argv) > 1):
     keyword = str(sys.argv[1])
 else:
-    keyword = "Trump"
+    keyword = "none"
 
 if (len(sys.argv) > 2):
     tweet_count = int(sys.argv[2])
@@ -124,6 +124,9 @@ auth.set_access_token(access_key, access_secret)
 stream = Stream(auth, l)
 while(tweet_count > 0):
     try:
-        stream.filter(track=[keyword],languages=["en"]) 
+        if(keyword != "none"):
+            stream.filter(track=[keyword],languages=["en"])
+        else:
+            stream.filter(locations=[-180,-90,180,90],languages=["en"])
     except (ProtocolError, AttributeError):
         continue
