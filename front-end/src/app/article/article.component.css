@@ -1,4 +1,5 @@
 /* articlesComponent's private CSS styles */
+
 .selected {
     background-color: #CFD8DC !important;
     color: white;
@@ -9,6 +10,38 @@
     padding: 10;
     /* width: 15em; */
   }
+  .searchbar input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: center;
+    width: 80%;
+    background: #f1f1f1;
+  }
+
+  .searchbar button {
+    float: center;
+    width: 10%;
+    padding: 10px;
+    background: rgb(150, 10, 10);
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    /*border-left: none; /* Prevent double borders */
+    cursor: pointer;
+  }
+  
+  .searchbar button:hover {
+    background: rgb(200, 10, 10);
+  }
+  
+  /* Clear floats */
+  .searchbar::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
   .articles li {
     cursor: pointer;
     position: relative;

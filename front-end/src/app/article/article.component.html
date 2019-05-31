@@ -1,12 +1,16 @@
-<input #searchBox id="search-box"
-(keyup.enter)="search(searchBox.value)"/>
-<button (click)="search(searchBox.value)">Search</button>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<h2>Relevant Articles: </h2>
+<div class="searchbar">
+  <input #searchBox id="search-box"  type="text" placeholder="Search"
+  (keyup.enter)="search(searchBox.value)"/>
+  <button (click)="search(searchBox.value)"><i class="fa fa-search"></i></button>
+</div>
+
+<h2>Relevant Tweets: </h2>
 <ul  class="articles" *ngIf="articles">
   <li *ngFor="let article of articles">
     <span class="badge">{{article.id}}</span>    
-    {{article.title | uppercase}}<span>: </span>    
+    {{article.author | uppercase}}<span>: </span>    
     {{article.body}}  
   </li>
 </ul>
