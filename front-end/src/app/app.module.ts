@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { ArticleComponent } from './article/article.component';
 import { MapComponent } from './map/map.component'
 
-
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,10 @@ import { MapComponent } from './map/map.component'
   imports: [
     BrowserModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDW6QAEg9BEQquxMDoYy_gAMGPNgtpddf0'
+    })
   ],
   bootstrap: [AppComponent]
 })
