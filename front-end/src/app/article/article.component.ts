@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ArticleService } from './article.service';
 import { Article } from './article';
 import { Observable, Subject } from 'rxjs';
@@ -16,58 +15,70 @@ export class ArticleComponent implements OnInit {
   articles: Article[];
   markers: marker[] = [];
   lastSearch: string;
-  lat: number = 33.9746831;
-  lng: number = -117.324226;
+  lat: number;//number = 33.9746831;
+  lng: number; //number = -117.324226;
+  rangeLimit: boolean = true;
 
-
-  constructor(private articleService: ArticleService) { }
+  constructor(private articleService: ArticleService) { 
+    if(navigator){
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.lng = pos.coords.longitude;
+        this.lat = pos.coords.latitude;
+      })
+    }
+  } 
 
   ngOnInit() {    
   }
+
+  switchRange(){
+    this.rangeLimit = !this.rangeLimit;
+    this.search(this.lastSearch);
+  }
+
   search(query: string) {
     this.lastSearch = query;
 
     this.articleService.getArticles(query)
         .subscribe(articles => this.articles = articles);    
     this.markers = [];
-    console.log("Hello World");
     
     for(var i =0; i < this.articles.length; i++){
-      this.markers.push({
-        lat: this.articles[i].lon,
-        lng: this.articles[i].lat,
-      });
-      
+      if(this.rangeLimit) {
+        if(this.distance(this.articles[i].lat,this.articles[i].lon) < 100){
+        //if you have marker issues try switching these
+          this.markers.push({
+            lat: this.articles[i].lat,
+            lng: this.articles[i].lon,
+          });
+        }
+      }
+      else {
+        this.markers.push({
+          lat: this.articles[i].lat,
+          lng: this.articles[i].lon,
+        });
+      }
     }
   }
-  /*
-  mapClicked($event: MouseEvent) {
-    this.markers.push({
-      lat: $event.coords.lat,
-      lng: $event.coords.lng,
-    });
-  }*/
+  
+  degreesToRadians(degrees) {
+    return degrees * Math.PI / 180;
+  }
 
-  // markers: marker[] = [
-	//   {
-	// 	  lat: 34.061622,
-	// 	  lng: -118.226382,
-	// 	  label: 'A',
-	// 	  draggable: true
-	//   },
-	//   {
-	// 	  lat: 33.66558,
-	// 	  lng: -117.810101,
-	// 	  label: 'B',
-	// 	  draggable: false
-	//   },
-	//   {
-	// 	  lat: 34.01713,
-	// 	  lng: -118.463708,
-	// 	  label: 'C',
-	// 	  draggable: true
-	//   }
-  // ]
+  distance(tweetLat: number, tweetLon: number){
+      var earthRadiusMI = 3959;
+      var latDist = this.degreesToRadians(tweetLat-this.lat);
+      var lonDist = this.degreesToRadians(tweetLon-this.lng);
+
+      var lat1 = this.degreesToRadians(this.lat);
+      var lat2 = this.degreesToRadians(tweetLat);
+
+      var a = Math.sin(latDist/2) * Math.sin(latDist/2) + 
+              Math.sin(lonDist/2) * Math.sin(lonDist/2) * Math.cos(lat1)*Math.cos(lat2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      return earthRadiusMI * c;
+  }
 }
 
 interface marker {

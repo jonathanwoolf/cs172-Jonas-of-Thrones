@@ -16,6 +16,8 @@
   <input #searchBox id="search-box"  type="text" placeholder="Search"
   (keyup.enter)="search(searchBox.value)"/>
   <button (click)="search(searchBox.value)"><i class="fa fa-search"></i></button>
+  <button name="rl" (click)="switchRange()" name="Range" *ngIf="!rangeLimit">Range Limit Off</button>
+  <button name="rl" (click)="switchRange()" name="Range" *ngIf="rangeLimit">Range Limit On</button>
 </div>
 
 <h2>Relevant Tweets: </h2>
@@ -23,9 +25,9 @@
   <li *ngFor="let article of articles">
     <span class="badge">{{article.id}}</span>    
     {{article.author | uppercase}}<span>: </span>    
-    {{article.body}}  <span> - </span>
-    {{article.lat}} <span>, </span>
-    {{article.lon}} 
+    {{article.body}} <span > - </span>
+    lon {{article.lon}} <span>, </span>
+    lat {{article.lat}} 
   </li>
 </ul>
 

@@ -27,7 +27,7 @@
 
   .searchbar button {
     float: center;
-    width: 10%;
+    width: 5%;
     padding: 10px;
     background: rgb(150, 10, 10);
     color: white;
@@ -36,6 +36,7 @@
     /*border-left: none; /* Prevent double borders */
     cursor: pointer;
   }
+
   
   .searchbar button:hover {
     background: rgb(200, 10, 10);
