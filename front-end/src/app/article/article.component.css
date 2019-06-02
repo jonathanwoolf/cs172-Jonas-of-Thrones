@@ -10,6 +10,12 @@
     padding: 10;
     /* width: 15em; */
   }
+  
+  agm-map {
+    height: 400px;
+    width: auto;
+  }
+
   .searchbar input[type=text] {
     padding: 10px;
     font-size: 17px;

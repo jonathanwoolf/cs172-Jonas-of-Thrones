@@ -1,5 +1,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+<agm-map [latitude]="lat" [longitude]="lng" >
+  <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>  -->
+  <div>
+    <agm-marker 
+      *ngFor="let m of markers; let i = index"
+      [latitude]="m.lat"
+      [longitude]="m.lng">
+    </agm-marker> 
+  </div>
+</agm-map>
+
 <div class="searchbar">
   <input #searchBox id="search-box"  type="text" placeholder="Search"
   (keyup.enter)="search(searchBox.value)"/>
@@ -11,8 +23,11 @@
   <li *ngFor="let article of articles">
     <span class="badge">{{article.id}}</span>    
     {{article.author | uppercase}}<span>: </span>    
-    {{article.body}}  
+    {{article.body}}  <span> - </span>
+    {{article.lat}} <span>, </span>
+    {{article.lon}} 
   </li>
 </ul>
+
 
 <h4 *ngIf="lastSearch">Last search query: <i>"{{lastSearch}}"</i></h4>
