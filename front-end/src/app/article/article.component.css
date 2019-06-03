@@ -10,7 +10,7 @@
     padding: 10;
     /* width: 15em; */
   }
-  
+
   agm-map {
     height: 400px;
     width: auto;
@@ -21,15 +21,15 @@
     font-size: 17px;
     border: 1px solid grey;
     float: center;
-    width: 80%;
+    width: 69%;
     background: #f1f1f1;
   }
 
   .searchbar button {
     float: center;
-    width: 5%;
+    width: 140px;
     padding: 10px;
-    background: rgb(150, 10, 10);
+    background: black;
     color: white;
     font-size: 17px;
     border: 1px solid grey;
@@ -37,11 +37,11 @@
     cursor: pointer;
   }
 
-  
+
   .searchbar button:hover {
     background: rgb(200, 10, 10);
   }
-  
+
   /* Clear floats */
   .searchbar::after {
     content: "";
@@ -57,7 +57,7 @@
     background-color: #EEE;
     margin: .5em;
     padding: .3em 0;
-    height: 3.2em;
+    height: auto; /* 3.2em; */
     border-radius: 4px;
   }
   .articles li.selected:hover {
@@ -78,12 +78,12 @@
     font-size: medium;
     color: white;
     padding: 0.8em 0.7em 0 0.7em;
-    background-color: rgb(150, 10, 10);
+    background-color: black;
     line-height: 1em;
     position: relative;
     left: -1px;
     top: -4px;
-    height: 2.2em;
+    height: 3em;
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
   }
