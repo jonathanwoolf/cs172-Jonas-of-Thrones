@@ -50,13 +50,14 @@
   }
 
   .articles li {
+    display: list-item;
     cursor: pointer;
     position: relative;
     left: 0;
     background-color: #EEE;
     margin: .5em;
     padding: .3em 0;
-    height: 1.6em;
+    height: 3.2em;
     border-radius: 4px;
   }
   .articles li.selected:hover {
@@ -74,15 +75,15 @@
   }
   .articles .badge {
     display: inline-block;
-    font-size: small;
+    font-size: medium;
     color: white;
     padding: 0.8em 0.7em 0 0.7em;
-    background-color: #607D8B;
+    background-color: rgb(150, 10, 10);
     line-height: 1em;
     position: relative;
     left: -1px;
     top: -4px;
-    height: 1.8em;
+    height: 2.2em;
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
   }
