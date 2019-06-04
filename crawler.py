@@ -22,20 +22,20 @@ consumer_key = consumer_key[:-1]
 consumer_secret = consumer_secret[:-1]
 
 #parse command line arguments(seeding keyword, # of tweets, directory)
-if (len(sys.argv) > 1):
-    keyword = str(sys.argv[1])
-else:
-    keyword = "none"
+# if (len(sys.argv) > 1):
+#     keyword = str(sys.argv[1])
+# else:
+keyword = "none"
 
-if (len(sys.argv) > 2):
-    tweet_count = int(sys.argv[2])
+if (len(sys.argv) > 1):
+    tweet_count = int(sys.argv[1])
 else:
     tweet_count = 10
 
-if (len(sys.argv) > 3):
-    dirName = str(sys.argv[3])
-else:
-    dirName = "data"
+# if (len(sys.argv) > 3):
+#     dirName = str(sys.argv[3])
+# else:
+dirName = "data"
 
 #generate starting filename and open filestream
 fileCount = 1
@@ -99,18 +99,18 @@ class twitterListener(StreamListener):
         }
         
         #Store tweet on a single line in data file
-        tweet_count = tweet_count - 1
-        dataString = str(json.dumps(data))
-        f.write(dataString)
-        f.write('\n')
-        statinfo = os.stat(filename)
-        
+        if data["Geo"] && not tweet['retweeted']:
+            tweet_count = tweet_count - 1
+            dataString = str(json.dumps(data))
+            f.write(dataString)
+            f.write(",\n")
+            statinfo = os.stat(filename)
         #Check if 10 MB file size has been reached, create new file if true
-        if(statinfo.st_size > (10 * 1024 * 1024)):
-            f.close()
-            ++fileCount
-            filename = dirName + '/' + 'tweets_' + str(fileCount) + '.json'
-            f = open(filename, 'w+')
+            if(statinfo.st_size > (10 * 1024 * 1024)):
+                f.close()
+                ++fileCount
+                filename = dirName + '/' + 'tweets_' + str(fileCount) + '.json'
+                f = open(filename, 'w+')
         return True
 
     def on_error(self, status):
@@ -127,6 +127,6 @@ while(tweet_count > 0):
         if(keyword != "none"):
             stream.filter(track=[keyword],languages=["en"])
         else:
-            stream.filter(locations=[-180,-90,180,90],languages=["en"])
+            stream.filter(locations=[-123.40,35.59,-66.79,48.25], languages=["en"])
     except (ProtocolError, AttributeError):
         continue
