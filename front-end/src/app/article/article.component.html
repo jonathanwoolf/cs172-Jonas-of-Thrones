@@ -1,18 +1,25 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-<agm-map [latitude]="lat" [longitude]="lng" >
+<agm-map [latitude]="lat" [longitude]="lng" style="text-align: center;">
   <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>  -->
   <div>
     <agm-marker 
       *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m.label, i)"
       [latitude]="m.lat"
-      [longitude]="m.lng">
+      [longitude]="m.lng"
+      [label]="m.label">  
+
+      <agm-info-window [latitude]="markerlat" [longitude]="markerlng">
+        <strong>lat:{{markerlat}} lon:{{markerlng}}</strong>
+      </agm-info-window>
+      
     </agm-marker> 
   </div>
 </agm-map>
 
-<div class="searchbar">
+<div class="searchbar"style="text-align: center;">
   <input #searchBox id="search-box"  type="text" placeholder="Search"
   (keyup.enter)="search(searchBox.value)"/>
   <button (click)="search(searchBox.value)"><i class="fa fa-search"></i></button>
@@ -25,7 +32,7 @@
   <li *ngFor="let article of articles">
     <span class="badge">{{article.id}}</span>    
     {{article.author | uppercase}}<span>: </span>    
-    {{article.body}} 
+    {{article.body}} <span>- </span>
   </li>
 </ul>
 

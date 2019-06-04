@@ -89,17 +89,27 @@ class twitterListener(StreamListener):
             text = tweet['text']
         
         #store data in dict for storage
-        data = {
+        data1 = {
             "Author": tweet['user']['name'],
             "Text": text,
             "Date": tweet['created_at'],
             "Embedded Link": tempURL,
             "Embedded Link Title": URLtitle,
-            "Geo": tweet['coordinates']
+            "Geo": tweet['coordinates'],
         }
         
         #Store tweet on a single line in data file
-        if data["Geo"] && not tweet['retweeted']:
+        if data1["Geo"] and not tweet['retweeted']:
+            data = {
+                "Author": tweet['user']['name'],
+                "Text": text,
+                "Date": tweet['created_at'],
+                "Embedded Link": tempURL,
+                "Embedded Link Title": URLtitle,
+                "Geo": tweet['coordinates'],
+                "Latitude": str(tweet['coordinates']['coordinates'][0]),
+                "Longitude": str(tweet['coordinates']['coordinates'][1])
+            }
             tweet_count = tweet_count - 1
             dataString = str(json.dumps(data))
             f.write(dataString)

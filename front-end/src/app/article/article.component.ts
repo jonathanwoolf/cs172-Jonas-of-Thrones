@@ -17,6 +17,9 @@ export class ArticleComponent implements OnInit {
   lastSearch: string;
   lat: number;//number = 33.9746831;
   lng: number; //number = -117.324226;
+  markerlat: number = 0.0;
+  markerlng: number = 0.0;
+
   rangeLimit: boolean = true;
 
   constructor(private articleService: ArticleService) { 
@@ -27,6 +30,11 @@ export class ArticleComponent implements OnInit {
       })
     }
   } 
+
+  clickedMarker(label: string, index: number){
+    this.markerlat=this.markers[index].lat;
+    this.markerlng=this.markers[index].lng;
+  }
 
   ngOnInit() {    
   }
@@ -50,6 +58,7 @@ export class ArticleComponent implements OnInit {
           this.markers.push({
             lat: this.articles[i].lat,
             lng: this.articles[i].lon,
+            label: this.articles[i].id.toString(),
           });
         }
       }
@@ -57,6 +66,7 @@ export class ArticleComponent implements OnInit {
         this.markers.push({
           lat: this.articles[i].lat,
           lng: this.articles[i].lon,
+          label: this.articles[i].id.toString(),
         });
       }
     }

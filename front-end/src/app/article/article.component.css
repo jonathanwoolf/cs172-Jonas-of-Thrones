@@ -27,9 +27,9 @@
 
   .searchbar button {
     float: center;
-    width: 140px;
+    width: 150px;
     padding: 10px;
-    background: black;
+    background:  rgb(231, 19, 19);
     color: white;
     font-size: 17px;
     border: 1px solid grey;
@@ -78,7 +78,7 @@
     font-size: medium;
     color: white;
     padding: 0.8em 0.7em 0 0.7em;
-    background-color: black;
+    background-color: rgb(231, 19, 19);
     line-height: 1em;
     position: relative;
     left: -1px;
